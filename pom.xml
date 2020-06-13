@@ -47,7 +47,7 @@
 	      <stopKey>foo</stopKey>
 	      <daemon>true</daemon>
           <webApp>
-            <contextPath>/ajaxexample</contextPath>
+            <contextPath>/resthome4logs</contextPath>
           </webApp>
         </configuration>
         <executions>

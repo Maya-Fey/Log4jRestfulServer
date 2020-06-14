@@ -22,7 +22,7 @@ public class LogList {
 		@Override
 		public int compare(JSONObject o1, JSONObject o2) {
 			try {
-				return LogsServlet.format.parse(o1.getString("timestamp")).compareTo(LogsServlet.format.parse(o2.getString("timestamp")));
+				return -LogsServlet.format.parse(o1.getString("timestamp")).compareTo(LogsServlet.format.parse(o2.getString("timestamp")));
 			} catch(Exception e) { throw new Error(e); }
 		}
 		

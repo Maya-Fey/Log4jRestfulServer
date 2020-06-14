@@ -219,6 +219,36 @@ public final class TestGetLogs {
         assertEquals(10, arr.length());
     }
 	
+	/**
+	 * Testing that order works
+	 */
+	@Test
+	public void testOrder() {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        request.addParameter("limit", Integer.toString(10));
+        request.addParameter("level", Level.ALL.toString());
+        
+        LogsServlet service = new LogsServlet();
+        
+        JSONObject first = addRandLog(Level.TRACE, service);
+        synchronized(service) {
+    		try {
+				service.wait(1500);
+			} catch (InterruptedException e) {}
+    	}
+        JSONObject last = addRandLog(Level.TRACE, service);
+        
+        service.doGet(request,response);
+
+        assertEquals(HttpServletResponse.SC_OK,response.getStatus());
+        
+        JSONArray arr = fromResponse(response);
+        assertEquals(2, arr.length());
+        assertEquals(arr.get(0).toString(), last.toString());
+    }
+	
 	private static JSONObject addRandLog(Level level, LogsServlet service) {
 		MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();

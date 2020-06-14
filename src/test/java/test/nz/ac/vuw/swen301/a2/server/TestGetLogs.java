@@ -232,7 +232,7 @@ public final class TestGetLogs {
         
         LogsServlet service = new LogsServlet();
         
-        JSONObject first = addRandLog(Level.TRACE, service);
+        addRandLog(Level.TRACE, service);
         synchronized(service) {
     		try {
 				service.wait(1500);

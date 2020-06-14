@@ -3,6 +3,8 @@
  */
 package nz.ac.vuw.swen301.a2.server;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -11,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Level;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * @author Claire
@@ -41,6 +45,15 @@ public class LogsServlet extends HttpServlet {
 			level = getLevel(resp, params, "level");
 		} catch(InvalidRequestError e) { return; }
 		
+		JSONArray ret = new JSONArray(); //placeholder
+		
+		try(PrintWriter writer = resp.getWriter()) {
+			writer.write(ret.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		resp.setStatus(HttpServletResponse.SC_OK);
 	}
 	
 	@Override
@@ -86,7 +99,13 @@ public class LogsServlet extends HttpServlet {
 	
 	private static void fail(HttpServletResponse resp, String reason) {
 		resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-		
+		JSONObject obj = new JSONObject();
+		obj.accumulate("error", reason);
+		try(PrintWriter writer = resp.getWriter()) {
+			writer.write(obj.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		throw new InvalidRequestError();
 	}
 

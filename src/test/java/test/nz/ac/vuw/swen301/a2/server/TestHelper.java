@@ -20,7 +20,7 @@ public class TestHelper {
 	 */
 	public static JSONObject newRandomLog(Level level) {
 		JSONObject obj = new JSONObject();
-		obj.accumulate("level", level);
+		obj.accumulate("level", level.toString());
 		obj.accumulate("message", "This is a message " + Math.random());
 		obj.accumulate("logger", "This is a logger " + Math.random());
 		obj.accumulate("thread", "This is a thread " + Math.random());

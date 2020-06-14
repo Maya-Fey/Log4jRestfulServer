@@ -115,7 +115,7 @@ public class LogsServlet extends HttpServlet {
 	
 	private static int getInt32(HttpServletResponse resp, Map<String, String[]> params, String param, Predicate<Integer> acceptanceCriteria) {
 		String[] vals = params.get(param);
-		if(vals == null || vals.length == 0) {
+		if(vals == null) {
 			fail(resp, "Parameter " + param + " undefined");
 		}
 		if(vals.length > 1) {
@@ -135,7 +135,7 @@ public class LogsServlet extends HttpServlet {
 	
 	private static Level getLevel(HttpServletResponse resp, Map<String, String[]> params, String param) {
 		String[] vals = params.get(param);
-		if(vals == null || vals.length == 0) {
+		if(vals == null) {
 			fail(resp, "Parameter " + param + " undefined");
 		}
 		if(vals.length > 1) {

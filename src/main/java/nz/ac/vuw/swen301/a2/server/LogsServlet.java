@@ -32,18 +32,14 @@ public class LogsServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 3441175578112383791L;
 	
-	protected static final DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
+	/**
+	 * Formatter for this servlet
+	 */
+	public static final DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
 	
 	static { format.setTimeZone(TimeZone.getTimeZone("UTC")); }
 	
 	private final LogList list = new LogList();
-
-	/**
-	 * 
-	 */
-	public LogsServlet() {
-		// TODO Auto-generated constructor stub
-	}
 	
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -73,7 +69,7 @@ public class LogsServlet extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 	{
-		if(!req.getContentType().equals("content/json")) {
+		if(!req.getContentType().equals("application/json")) {
 			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}
@@ -89,6 +85,11 @@ public class LogsServlet extends HttpServlet {
 					resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 					return;
 				}
+			}
+			
+			if(!obj.has("message") || !obj.has("thread") || !obj.has("logger")) {
+				resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				return;
 			}
 			
 			if(list.exists(obj)) {

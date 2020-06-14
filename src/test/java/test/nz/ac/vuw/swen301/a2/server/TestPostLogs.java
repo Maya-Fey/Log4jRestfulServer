@@ -1,6 +1,6 @@
 package test.nz.ac.vuw.swen301.a2.server;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Date;
 import java.util.UUID;
@@ -187,7 +187,7 @@ public final class TestPostLogs {
 	}
 	
 	/**
-	 * Testing, does an invalid timestamp result in an error
+	 * Testing, does an invalid timestamp result in an error	
 	 */
 	@Test
 	public void testBadTimestamp() {

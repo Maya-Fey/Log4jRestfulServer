@@ -3,7 +3,7 @@
  */
 package test.nz.ac.vuw.swen301.a2.server;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import javax.servlet.http.HttpServletResponse;
 

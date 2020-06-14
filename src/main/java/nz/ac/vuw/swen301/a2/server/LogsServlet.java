@@ -50,10 +50,10 @@ public class LogsServlet extends HttpServlet {
 		int max = 0;
 		Level level = null;
 		
-		try {
-			max = getInt32(resp, params, "limit", (i) -> { return i >= 0 && i <= Integer.MAX_VALUE; });
-			level = getLevel(resp, params, "level");
-		} catch(InvalidRequestError e) { return; }
+		max = getInt32(resp, params, "limit", (i) -> { return i >= 0 && i <= Integer.MAX_VALUE; });
+		if(resp.getStatus() == HttpServletResponse.SC_BAD_REQUEST) return;
+		level = getLevel(resp, params, "level");
+		if(resp.getStatus() == HttpServletResponse.SC_BAD_REQUEST) return;
 		
 		JSONArray ret = list.getLogs(level, max);
 		
@@ -116,36 +116,34 @@ public class LogsServlet extends HttpServlet {
 	private static int getInt32(HttpServletResponse resp, Map<String, String[]> params, String param, Predicate<Integer> acceptanceCriteria) {
 		String[] vals = params.get(param);
 		if(vals == null) {
-			fail(resp, "Parameter " + param + " undefined");
+			fail(resp, "Parameter " + param + " undefined"); return 0;
 		}
 		if(vals.length > 1) {
-			fail(resp, "Parameter " + param + " defined more than once");
+			fail(resp, "Parameter " + param + " defined more than once"); return 0;
 		}
 		try {
 			int number = Integer.parseInt(vals[0]);
-			if(!acceptanceCriteria.test(number)) {
-				fail(resp, "Paramater " + param + " parsed correctly but did not meet acceptance criteria");
+			if(!acceptanceCriteria.test(number)) { 
+				fail(resp, "Paramater " + param + " parsed correctly but did not meet acceptance criteria"); return 0;
 			}
 			return number;
 		} catch(NumberFormatException e) {
-			fail(resp, "Parameter " + param + " was not a valid 32-bit integer as expected.");
-			return 0; //Dead code
+			fail(resp, "Parameter " + param + " was not a valid 32-bit integer as expected."); return 0; 
 		}
 	}
 	
 	private static Level getLevel(HttpServletResponse resp, Map<String, String[]> params, String param) {
 		String[] vals = params.get(param);
 		if(vals == null) {
-			fail(resp, "Parameter " + param + " undefined");
+			fail(resp, "Parameter " + param + " undefined"); return null;
 		}
 		if(vals.length > 1) {
-			fail(resp, "Parameter " + param + " defined more than once");
+			fail(resp, "Parameter " + param + " defined more than once"); return null;
 		}
 		if(vals[0].equals(Level.DEBUG.toString())) return Level.DEBUG;
 		Level level = Level.toLevel(vals[0]);
 		if(level != Level.DEBUG) return level;
-		fail(resp, "Parameter " + param + " was not a valid level.");
-		return null;
+		fail(resp, "Parameter " + param + " was not a valid level."); return null;
 	}
 	
 	private static void fail(HttpServletResponse resp, String reason) {
@@ -157,7 +155,6 @@ public class LogsServlet extends HttpServlet {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		throw new InvalidRequestError();
 	}
 
 }

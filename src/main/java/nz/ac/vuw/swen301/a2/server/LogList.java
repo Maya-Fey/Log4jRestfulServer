@@ -1,8 +1,9 @@
 package nz.ac.vuw.swen301.a2.server;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,17 @@ import org.json.JSONObject;
  */
 public class LogList {
 	
+	private static final Comparator<JSONObject> comp = new Comparator<JSONObject>() {
+
+		@Override
+		public int compare(JSONObject o1, JSONObject o2) {
+			try {
+				return LogsServlet.format.parse(o1.getString("timestamp")).compareTo(LogsServlet.format.parse(o2.getString("timestamp")));
+			} catch(Exception e) { throw new Error(e); }
+		}
+		
+	};
+	
 	private final List<JSONObject> logs = new ArrayList<>();
 	private final Map<String, JSONObject> idMap = new HashMap<>();
 
@@ -27,6 +39,7 @@ public class LogList {
 	public void addEvent(JSONObject obj) {
 		idMap.put(obj.getString("id"), obj);
 		logs.add(obj);
+		Collections.sort(logs, comp);
 	}
 	
 	/**
@@ -44,11 +57,14 @@ public class LogList {
 	 */
 	public JSONArray getLogs(Level level, int limit) {
 		JSONArray array = new JSONArray();
-		Iterator<JSONObject> filtered = logs.stream().filter((obj) -> {
-			return Level.toLevel(obj.getString("level")).toInt() >= level.toInt();
-		}).iterator();
-		for(int i = 0; i < limit && filtered.hasNext(); i++) {
-			array.put(filtered.next());
+		int i, j; i = j = 0;
+		while(i < limit && j < logs.size()) {
+			JSONObject log = logs.get(j);
+			if(Level.toLevel(log.getString("level")).toInt() >= level.toInt()) {
+				array.put(log);
+				i++;
+			}
+			j++;
 		}
 		return array;
 	}

@@ -32,7 +32,7 @@ public class LogsServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 3441175578112383791L;
 	
-	private static final DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
+	protected static final DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
 	
 	static { format.setTimeZone(TimeZone.getTimeZone("UTC")); }
 	
@@ -97,6 +97,7 @@ public class LogsServlet extends HttpServlet {
 			}
 			
 			list.addEvent(obj);
+			resp.setStatus(HttpServletResponse.SC_CREATED);
 		} catch(IOException e) {
 			e.printStackTrace();
 		} catch(JSONException e) {

@@ -61,7 +61,7 @@ public class StatsPNGServlet extends HttpServlet {
 	        	counts.put(level, counts.get(level) + 1);
 	        });
 	        
-	        int max = 0;
+	        int max = 1;
 	        for(int i : counts.values())
 	        	if(i > max)
 	        		max = i;

@@ -6,14 +6,16 @@ package test.nz.ac.vuw.swen301.a2.server;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.apache.log4j.Level;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-import nz.ac.vuw.swen301.a2.server.LogIndex;
 import nz.ac.vuw.swen301.a2.server.LogsServlet;
 import nz.ac.vuw.swen301.a2.server.StatsCSVServlet;
 
@@ -22,6 +24,11 @@ import nz.ac.vuw.swen301.a2.server.StatsCSVServlet;
  */
 public class TestStatsCSV {
 
+	/**
+	 * 
+	 */
+	public final DateFormat format = new SimpleDateFormat("d/M/YYYY"); { format.setTimeZone(TimeZone.getTimeZone("UTC")); }
+	
 	/**
 	 * @throws IOException 
 	 * 
@@ -45,7 +52,7 @@ public class TestStatsCSV {
         
         String[] lines = response.getContentAsString().split("\n");
         String[] header = lines[0].split("\t");
-        int pos1 = header[1].equals(LogIndex.format.format(new Date())) ? 1 : 2;
+        int pos1 = header[1].equals(format.format(new Date())) ? 1 : 2;
         int pos2 = pos1 == 1 ? 2 : 1;
         for(String line : lines) {
         	String[] cells = line.split("\t");

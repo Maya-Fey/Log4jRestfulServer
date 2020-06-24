@@ -219,13 +219,13 @@ public class LogIndex {
 	/**
 	 * A date format that only includes day/month/year
 	 */
-	public static final DateFormat format = new SimpleDateFormat("d/M/YYYY"); static { format.setTimeZone(TimeZone.getTimeZone("UTC")); }
+	public final DateFormat format = new SimpleDateFormat("d/M/YYYY"); { format.setTimeZone(TimeZone.getTimeZone("UTC")); }
 	
 	/**
 	 * @param date A fully-fledged date
 	 * @return A date with only a year, month, and day
 	 */
-	public static String removeTime(Date date)
+	public String removeTime(Date date)
 	{
 		return format.format(date);
 	}

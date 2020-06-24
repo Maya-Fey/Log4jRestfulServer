@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.Date;
 
+import org.json.JSONArray;
 import org.junit.jupiter.api.Test;
 
 import nz.ac.vuw.swen301.a2.server.LogIndex;
@@ -30,7 +31,7 @@ public class TestMisc {
 		Date date2 = new Date(time);
 		assertFalse(date1 == date2);
 		assertEquals(date1, date2);
-		assertEquals(LogIndex.removeTime(date1), LogIndex.removeTime(date2));
+		assertEquals(new LogIndex(new JSONArray()).removeTime(date1), new LogIndex(new JSONArray()).removeTime(date2));
 	}
 
 }

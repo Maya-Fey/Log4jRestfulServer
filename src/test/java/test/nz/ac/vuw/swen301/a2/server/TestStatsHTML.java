@@ -6,8 +6,11 @@ package test.nz.ac.vuw.swen301.a2.server;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.TimeZone;
 
 import org.apache.log4j.Level;
 import org.jsoup.Jsoup;
@@ -18,7 +21,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-import nz.ac.vuw.swen301.a2.server.LogIndex;
 import nz.ac.vuw.swen301.a2.server.LogsServlet;
 import nz.ac.vuw.swen301.a2.server.StatsServlet;
 
@@ -26,6 +28,11 @@ import nz.ac.vuw.swen301.a2.server.StatsServlet;
  * @author Claire
  */
 public class TestStatsHTML {
+	
+	/**
+	 * 
+	 */
+	public final DateFormat format = new SimpleDateFormat("d/M/YYYY"); { format.setTimeZone(TimeZone.getTimeZone("UTC")); }
 
 	/**
 	 * @throws IOException 
@@ -53,7 +60,7 @@ public class TestStatsHTML {
         Elements body = table.getElementsByTag("tbody").get(0).getElementsByTag("tr");
         Elements header = table.getElementsByTag("thead").get(0).getElementsByTag("tr").get(0).getElementsByTag("td");
         
-        int pos1 = header.get(1).childNode(0).toString().trim().equals(LogIndex.format.format(new Date())) ? 1 : 2;
+        int pos1 = header.get(1).childNode(0).toString().trim().equals(format.format(new Date())) ? 1 : 2;
         int pos2 = pos1 == 1 ? 2 : 1;
         Iterator<Element> bodyiterator = body.iterator();
         while(bodyiterator.hasNext()) {

@@ -33,11 +33,13 @@ public class LogsServlet extends HttpServlet {
 	private static final long serialVersionUID = 3441175578112383791L;
 	
 	/**
-	 * Formatter for this servlet
+	 * @return Formatter for this servlet
 	 */
-	public static final DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
-	
-	static { format.setTimeZone(TimeZone.getTimeZone("UTC")); }
+	public static final DateFormat timestampFormatter() {
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
+		format.setTimeZone(TimeZone.getTimeZone("UTC"));
+		return format;
+	}
 	
 	static LogList list = new LogList();
 	
@@ -50,6 +52,8 @@ public class LogsServlet extends HttpServlet {
 	{
 		reset();
 	}
+	
+	private final DateFormat format = timestampFormatter();
 	
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)

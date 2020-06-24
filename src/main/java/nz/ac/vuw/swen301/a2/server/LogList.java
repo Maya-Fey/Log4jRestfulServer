@@ -1,5 +1,6 @@
 package nz.ac.vuw.swen301.a2.server;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -19,10 +20,12 @@ public class LogList {
 	
 	private static final Comparator<JSONObject> comp = new Comparator<JSONObject>() {
 
+		private DateFormat formatter = LogsServlet.timestampFormatter();
+		
 		@Override
 		public int compare(JSONObject o1, JSONObject o2) {
 			try {
-				return LogsServlet.format.parse(o2.getString("timestamp")).compareTo(LogsServlet.format.parse(o1.getString("timestamp")));
+				return formatter.parse(o2.getString("timestamp")).compareTo(formatter.parse(o1.getString("timestamp")));
 			} catch(Exception e) { throw new Error(e); }
 		}
 		

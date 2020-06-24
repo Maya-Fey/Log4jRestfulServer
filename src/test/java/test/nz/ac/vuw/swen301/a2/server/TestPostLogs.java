@@ -2,6 +2,7 @@ package test.nz.ac.vuw.swen301.a2.server;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -42,6 +43,7 @@ public final class TestPostLogs {
 	 */
 	@Test
 	public void testValidJSONWithoutParam() {
+		DateFormat format = LogsServlet.timestampFormatter();
 		MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
         request.setContentType("application/json");
@@ -49,7 +51,7 @@ public final class TestPostLogs {
         JSONObject obj = new JSONObject();
         obj.accumulate("id", UUID.randomUUID());
         obj.accumulate("message", "This is a message.");
-        obj.accumulate("timestamp", LogsServlet.format.format(new Date()));
+        obj.accumulate("timestamp", format.format(new Date()));
         obj.accumulate("thread", "thisisathread");
         //obj.accumulate("logger", "path.to.logger");
         obj.accumulate("level", Level.DEBUG.toString());
@@ -68,7 +70,7 @@ public final class TestPostLogs {
         obj = new JSONObject();
         obj.accumulate("id", UUID.randomUUID());
         //obj.accumulate("message", "This is a message.");
-        obj.accumulate("timestamp", LogsServlet.format.format(new Date()));
+        obj.accumulate("timestamp", format.format(new Date()));
         obj.accumulate("thread", "thisisathread");
         obj.accumulate("logger", "path.to.logger");
         obj.accumulate("level", Level.DEBUG.toString());
@@ -87,7 +89,7 @@ public final class TestPostLogs {
         obj = new JSONObject();
         obj.accumulate("id", UUID.randomUUID());
         obj.accumulate("message", "This is a message.");
-        obj.accumulate("timestamp", LogsServlet.format.format(new Date()));
+        obj.accumulate("timestamp", format.format(new Date()));
         //obj.accumulate("thread", "thisisathread");
         obj.accumulate("logger", "path.to.logger");
         obj.accumulate("level", Level.DEBUG.toString());
@@ -166,6 +168,7 @@ public final class TestPostLogs {
 	 */
 	@Test
 	public void testBadUUID() {
+		DateFormat format = LogsServlet.timestampFormatter();
 		MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
         request.setContentType("application/json");
@@ -173,7 +176,7 @@ public final class TestPostLogs {
         JSONObject obj = new JSONObject();
         obj.accumulate("id", UUID.randomUUID() + " ");
         obj.accumulate("message", "This is a message.");
-        obj.accumulate("timestamp", LogsServlet.format.format(new Date()));
+        obj.accumulate("timestamp", format.format(new Date()));
         obj.accumulate("thread", "thisisathread");
         obj.accumulate("logger", "path.to.logger");
         obj.accumulate("level", Level.DEBUG.toString());
@@ -191,6 +194,7 @@ public final class TestPostLogs {
 	 */
 	@Test
 	public void testBadTimestamp() {
+		DateFormat format = LogsServlet.timestampFormatter();
 		MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
         request.setContentType("application/json");
@@ -198,7 +202,7 @@ public final class TestPostLogs {
         JSONObject obj = new JSONObject();
         obj.accumulate("id", UUID.randomUUID());
         obj.accumulate("message", "This is a message.");
-        obj.accumulate("timestamp", "X" + LogsServlet.format.format(new Date()));
+        obj.accumulate("timestamp", "X" + format.format(new Date()));
         obj.accumulate("thread", "thisisathread");
         obj.accumulate("logger", "path.to.logger");
         obj.accumulate("level", Level.DEBUG.toString());
@@ -216,6 +220,7 @@ public final class TestPostLogs {
 	 */
 	@Test
 	public void testBadLevel() {
+		DateFormat format = LogsServlet.timestampFormatter();
 		MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
         request.setContentType("application/json");
@@ -223,7 +228,7 @@ public final class TestPostLogs {
         JSONObject obj = new JSONObject();
         obj.accumulate("id", UUID.randomUUID());
         obj.accumulate("message", "This is a message.");
-        obj.accumulate("timestamp", LogsServlet.format.format(new Date()));
+        obj.accumulate("timestamp", format.format(new Date()));
         obj.accumulate("thread", "thisisathread");
         obj.accumulate("logger", "path.to.logger");
         obj.accumulate("level", "INVALID");

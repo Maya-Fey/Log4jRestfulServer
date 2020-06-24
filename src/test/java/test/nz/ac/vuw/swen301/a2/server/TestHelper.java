@@ -1,5 +1,6 @@
 package test.nz.ac.vuw.swen301.a2.server;
 
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -16,6 +17,8 @@ import nz.ac.vuw.swen301.a2.server.LogsServlet;
  */
 public class TestHelper {
 	
+	private static DateFormat format = LogsServlet.timestampFormatter();
+	
 	/**
 	 * @param level
 	 * @return A random log at the specified level
@@ -26,7 +29,7 @@ public class TestHelper {
 		obj.accumulate("message", "This is a message " + Math.random());
 		obj.accumulate("logger", "This is a logger " + Math.random());
 		obj.accumulate("thread", "This is a thread " + Math.random());
-		obj.accumulate("timestamp", LogsServlet.format.format(new Date()));
+		obj.accumulate("timestamp", format.format(new Date()));
 		obj.accumulate("id", UUID.randomUUID());
 		return obj;
 	}
@@ -44,7 +47,7 @@ public class TestHelper {
 		obj.accumulate("message", "This is a message " + Math.random());
 		obj.accumulate("logger", logger);
 		obj.accumulate("thread", thread);
-		obj.accumulate("timestamp", LogsServlet.format.format(date));
+		obj.accumulate("timestamp", format.format(date));
 		obj.accumulate("id", UUID.randomUUID());
 		return obj;
 	}

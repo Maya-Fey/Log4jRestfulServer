@@ -42,10 +42,11 @@ public class LogIndex {
 	 */
 	public LogIndex(JSONArray logs)
 	{
+		DateFormat format = LogsServlet.timestampFormatter();
 		logs.forEach((o) -> {
 			JSONObject obj = (JSONObject) o;
 			try {
-				addToSetMap(dateIndex, removeTime(LogsServlet.format.parse(obj.getString("timestamp"))), obj);
+				addToSetMap(dateIndex, removeTime(format.parse(obj.getString("timestamp"))), obj);
 				addToSetMap(threadIndex, obj.getString("thread"), obj);
 				addToSetMap(loggerIndex, obj.getString("logger"), obj);
 				addToSetMap(levelIndex, Level.toLevel(obj.getString("level")), obj);

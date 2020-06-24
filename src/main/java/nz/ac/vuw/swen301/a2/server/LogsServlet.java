@@ -39,14 +39,16 @@ public class LogsServlet extends HttpServlet {
 	
 	static { format.setTimeZone(TimeZone.getTimeZone("UTC")); }
 	
-	protected static LogList list = new LogList();
+	static LogList list = new LogList();
+	
+	private static void reset() { list = new LogList(); }
 	
 	/**
 	 * 
 	 */
 	public LogsServlet()
 	{
-		list = new LogList();
+		reset();
 	}
 	
 	@Override
@@ -58,7 +60,7 @@ public class LogsServlet extends HttpServlet {
 		int max = 0;
 		Level level = null;
 		
-		max = getInt32(resp, params, "limit", (i) -> { return i >= 0 && i <= Integer.MAX_VALUE; });
+		max = getInt32(resp, params, "limit", (i) -> { return i >= 0; });
 		if(resp.getStatus() == HttpServletResponse.SC_BAD_REQUEST) return;
 		level = getLevel(resp, params, "level");
 		if(resp.getStatus() == HttpServletResponse.SC_BAD_REQUEST) return;

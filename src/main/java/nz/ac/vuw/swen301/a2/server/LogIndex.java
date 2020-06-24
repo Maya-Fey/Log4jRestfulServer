@@ -4,6 +4,7 @@
 package nz.ac.vuw.swen301.a2.server;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -48,9 +49,9 @@ public class LogIndex {
 				addToSetMap(threadIndex, obj.getString("thread"), obj);
 				addToSetMap(loggerIndex, obj.getString("logger"), obj);
 				addToSetMap(levelIndex, Level.toLevel(obj.getString("level")), obj);
-			} catch (Exception e) {
+			} catch (ParseException e) {
 				throw new Error(e);
-			}
+			} 
 		});
 	}
 	
@@ -217,7 +218,7 @@ public class LogIndex {
 	/**
 	 * A date format that only includes day/month/year
 	 */
-	public static DateFormat format = new SimpleDateFormat("d/M/YYYY"); static { format.setTimeZone(TimeZone.getTimeZone("UTC")); }
+	public static final DateFormat format = new SimpleDateFormat("d/M/YYYY"); static { format.setTimeZone(TimeZone.getTimeZone("UTC")); }
 	
 	/**
 	 * @param date A fully-fledged date

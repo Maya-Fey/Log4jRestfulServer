@@ -27,7 +27,7 @@ public class StatsXLSServlet extends HttpServlet {
 	 */
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 	{
-		resp.setContentType("text/csv");
+		resp.setContentType("application/vnd.ms-excel");
 		
 		resp.setHeader("content-disposition", "inline; filename=\"stats.xls\"");
 		try(OutputStream stream = resp.getOutputStream()) {

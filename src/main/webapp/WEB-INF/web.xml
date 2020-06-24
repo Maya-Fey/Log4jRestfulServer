@@ -12,13 +12,37 @@
         <servlet-name>StatsServer</servlet-name>
         <servlet-class>nz.ac.vuw.swen301.a2.server.StatsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CSVStatsServer</servlet-name>
+        <servlet-class>nz.ac.vuw.swen301.a2.server.StatsCSVServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>XLSStatsServer</servlet-name>
+        <servlet-class>nz.ac.vuw.swen301.a2.server.StatsXLSServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PNGStatsServer</servlet-name>
+        <servlet-class>nz.ac.vuw.swen301.a2.server.StatsPNGServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogsServer</servlet-name>
         <url-pattern>/logs</url-pattern>
     </servlet-mapping>
-     <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>StatsServer</servlet-name>
         <url-pattern>/stats</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CSVStatsServer</servlet-name>
+        <url-pattern>/statscsv</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>XLSStatsServer</servlet-name>
+        <url-pattern>/statsxls</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PNGStatsServer</servlet-name>
+        <url-pattern>/statspng</url-pattern>
     </servlet-mapping>
 
 </web-app>

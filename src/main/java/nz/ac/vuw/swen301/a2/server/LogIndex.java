@@ -4,7 +4,6 @@
 package nz.ac.vuw.swen301.a2.server;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,6 +13,11 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import org.apache.log4j.Level;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -140,7 +144,7 @@ public class LogIndex {
 	public String toCSV()
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.append("\t");
+		builder.append("\"\"\t");
 		for(String date : this.getCols())
 		{
 			builder.append(date);
@@ -150,7 +154,6 @@ public class LogIndex {
 		builder.append("\n");
 		for(Object o : this.getRows())
 		{
-			builder.append("\t\t<tr>\n");
 			builder.append(o.toString());
 			builder.append("\t");
 			for(String date : this.getCols())
@@ -163,6 +166,34 @@ public class LogIndex {
 		}
 		builder.delete(builder.length() - 1, builder.length());
 		return builder.toString();
+	}
+	
+	/**
+	 * @return An XLS workbook
+	 */
+	public Workbook toXLS()
+	{
+		Workbook workbook = new HSSFWorkbook(); 
+        Sheet sheet = workbook.createSheet("Status");
+        int nRow = 0;
+        int nCell = 0;
+        Row header = sheet.createRow(nRow++);
+        header.createCell(nCell++);
+        for(String date : this.getCols())
+		{
+        	header.createCell(nCell++).setCellValue(date);
+		}
+        for(Object o : this.getRows())
+		{
+        	nCell = 0;
+        	Row row = sheet.createRow(nRow++);
+        	row.createCell(nCell++).setCellValue(o.toString());
+			for(String date : this.getCols())
+			{
+				row.createCell(nCell++).setCellValue(this.getValAt(o, date));
+			}
+		}
+        return workbook;
 	}
 	
 	private static <Key, Value> void addToSetMap(Map<Key, Set<Value>> map, Key key, Value value)

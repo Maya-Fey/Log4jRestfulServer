@@ -28,7 +28,7 @@ import org.json.JSONObject;
  */
 public class LogIndex {
 	
-	private final Map<Date, Set<JSONObject>> dateIndex = new HashMap<>();
+	private final Map<String, Set<JSONObject>> dateIndex = new HashMap<>();
 	private final Map<String, Set<JSONObject>> threadIndex = new HashMap<>();
 	private final Map<String, Set<JSONObject>> loggerIndex = new HashMap<>();
 	private final Map<Level, Set<JSONObject>> levelIndex = new HashMap<>();
@@ -54,7 +54,7 @@ public class LogIndex {
 	/**
 	 * @return The columns for a new table
 	 */
-	public Set<Date> getCols()
+	public Set<String> getCols()
 	{
 		return dateIndex.keySet();
 	}
@@ -65,9 +65,9 @@ public class LogIndex {
 	public Set<Object> getRows()
 	{
 		Set<Object> set = new HashSet<>();
-		set.addAll(threadIndex.entrySet());
-		set.addAll(loggerIndex.entrySet());
-		set.addAll(levelIndex.entrySet());
+		set.addAll(threadIndex.keySet());
+		set.addAll(loggerIndex.keySet());
+		set.addAll(levelIndex.keySet());
 		return set;
 	}
 	
@@ -100,11 +100,11 @@ public class LogIndex {
 		builder.append("\t\t<tr>\n");
 		builder.append("\t\t\t<td>\n");
 		builder.append("\t\t\t</td>\n");
-		for(Date date : this.getCols())
+		for(String date : this.getCols())
 		{
 			builder.append("\t\t\t<td>\n");
 			builder.append("\t\t\t\t");
-			builder.append(format.format(date));
+			builder.append(date);
 			builder.append("\n");
 			builder.append("\t\t\t</td>\n");
 		}
@@ -119,7 +119,7 @@ public class LogIndex {
 			builder.append(o.toString());
 			builder.append("\n");
 			builder.append("\t\t\t</td>\n");
-			for(Date date : this.getCols())
+			for(String date : this.getCols())
 			{
 				builder.append("\t\t\t<td>\n");
 				builder.append("\t\t\t\t");
@@ -141,9 +141,9 @@ public class LogIndex {
 	{
 		StringBuilder builder = new StringBuilder();
 		builder.append("\t");
-		for(Date date : this.getCols())
+		for(String date : this.getCols())
 		{
-			builder.append(format.format(date));
+			builder.append(date);
 			builder.append("\t");
 		}
 		builder.delete(builder.length() - 1, builder.length());
@@ -153,7 +153,7 @@ public class LogIndex {
 			builder.append("\t\t<tr>\n");
 			builder.append(o.toString());
 			builder.append("\t");
-			for(Date date : this.getCols())
+			for(String date : this.getCols())
 			{
 				builder.append(this.getValAt(o, date));
 				builder.append("\t");
@@ -187,17 +187,15 @@ public class LogIndex {
 	/**
 	 * A date format that only includes day/month/year
 	 */
-	public static DateFormat format = new SimpleDateFormat("DD/MM/YYYY"); static { format.setTimeZone(TimeZone.getTimeZone("UTC")); }
+	public static DateFormat format = new SimpleDateFormat("d/M/YYYY"); static { format.setTimeZone(TimeZone.getTimeZone("UTC")); }
 	
 	/**
 	 * @param date A fully-fledged date
 	 * @return A date with only a year, month, and day
 	 */
-	public static Date removeTime(Date date)
+	public static String removeTime(Date date)
 	{
-		try {
-			return format.parse(format.format(date));
-		} catch (ParseException e) { return null; }
+		return format.format(date);
 	}
 
 }

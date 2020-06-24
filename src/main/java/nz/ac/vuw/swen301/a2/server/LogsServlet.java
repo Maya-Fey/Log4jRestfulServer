@@ -39,7 +39,15 @@ public class LogsServlet extends HttpServlet {
 	
 	static { format.setTimeZone(TimeZone.getTimeZone("UTC")); }
 	
-	private final LogList list = new LogList();
+	protected static LogList list = new LogList();
+	
+	/**
+	 * 
+	 */
+	public LogsServlet()
+	{
+		list = new LogList();
+	}
 	
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
